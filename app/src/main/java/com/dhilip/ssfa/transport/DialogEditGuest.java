@@ -34,35 +34,40 @@ import java.util.Locale;
  */
 public class DialogEditGuest extends DialogFragment
 {
+    static final String EMPTY_STRING = "";
+    static EditText dialog_editText_arr_other;
+    static TextView dialog_textView_arrivalTime;
+    static EditText dialog_editText_dep_other;
+    static TextView dialog_textView_departureTime;
+    static TextView dialog_textView_selected;
+    static RadioButton dialog_radioButton_arr_other;
+    static RadioButton dialog_radioButton_dep_other;
+    static Date date;
     Dialog dialog = getDialog();
     View rootView;
     EditText dialog_editText_name;
     EditText dialog_editText_othersCount;
     EditText dialog_editText_hometown;
-    static EditText dialog_editText_arr_other;
-    static TextView dialog_textView_arrivalTime;
     EditText dialog_editText_arrivalDetails;
     EditText dialog_editText_placeOfStay;
-    static EditText dialog_editText_dep_other;
-    static TextView dialog_textView_departureTime;
     EditText dialog_editText_departureDetails;
     EditText dialog_editText_contactNo;
     EditText dialog_editText_facebookID;
     EditText dialog_editText_emailID;
     Button dialog_button_Update;
-    static TextView dialog_textView_selected;
     RadioButton dialog_radioButton_arr_airport;
     RadioButton dialog_radioButton_dep_airport;
     RadioButton dialog_radioButton_arr_railwayStation;
     RadioButton dialog_radioButton_dep_railwayStation;
-    static RadioButton dialog_radioButton_arr_other;
-    static RadioButton dialog_radioButton_dep_other;
     RadioGroup dialog_radioGroup_arrival;
     RadioGroup dialog_radioGroup_departure;
     CheckBox dialog_checkBox_isArtist;
-    static final String EMPTY_STRING = "";
-    static Date date;
     List<Guest> guests;
+
+    public DialogEditGuest(List<Guest> guests)
+    {
+        this.guests = guests;
+    }
 
     @Nullable
     @Override
@@ -72,12 +77,6 @@ public class DialogEditGuest extends DialogFragment
         InitializeControls();
         PopulateControls(guests);
         return rootView;
-    }
-
-    public DialogEditGuest(List<Guest> guests)
-    {
-        this.guests = guests;
-
     }
 
     private void InitializeControls()
@@ -529,6 +528,17 @@ public class DialogEditGuest extends DialogFragment
 //
 //    }
 
+    public void showTruitonTimePickerDialog(View v)
+    {
+        android.support.v4.app.DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(this.getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showTruitonDatePickerDialog(View v)
+    {
+        android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(this.getActivity().getSupportFragmentManager(), "datePicker");
+    }
 
     public static class TimePickerFragment extends android.support.v4.app.DialogFragment implements
             TimePickerDialog.OnTimeSetListener
@@ -613,18 +623,6 @@ public class DialogEditGuest extends DialogFragment
 
             date = calendar.getTime();
         }
-    }
-
-    public void showTruitonTimePickerDialog(View v)
-    {
-        android.support.v4.app.DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(this.getActivity().getSupportFragmentManager(), "timePicker");
-    }
-
-    public void showTruitonDatePickerDialog(View v)
-    {
-        android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(this.getActivity().getSupportFragmentManager(), "datePicker");
     }
 
 }

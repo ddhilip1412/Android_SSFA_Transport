@@ -106,10 +106,23 @@ public class TransDBHandler extends SQLiteOpenHelper
     // Getting one guest
     public List<Guest> getGuest(int guestID)
     {
-        List<Guest> guestList = new ArrayList<Guest>();
+        List<Guest> guestList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectGuestQuery = "SELECT  * FROM " + TABLE_GUESTS + " WHERE " + KEY_ID + " = " + guestID;
+        int guestID1;
+        int guestID2;
+
+        if ((guestID % 2) == 0)
+        {
+            guestID1 = guestID - 1;
+            guestID2 = guestID;
+        } else
+        {
+            guestID1 = guestID;
+            guestID2 = guestID + 1;
+        }
+
+        String selectGuestQuery = "SELECT  * FROM " + TABLE_GUESTS + " WHERE " + KEY_ID + " in (" + guestID1 + ", " + guestID2 + ")";
         Cursor cursor = db.rawQuery(selectGuestQuery, null);
 
         if (cursor == null)
@@ -145,7 +158,7 @@ public class TransDBHandler extends SQLiteOpenHelper
     // Getting All Guests
     public List<Guest> getAllGuests()
     {
-        List<Guest> guestList = new ArrayList<Guest>();
+        List<Guest> guestList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_GUESTS + " ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
 
@@ -221,7 +234,7 @@ public class TransDBHandler extends SQLiteOpenHelper
         String distinctDepartureTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " + KEY_IS_DEPARTURE + " = '" + 1 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
 
         Cursor cursor = db.rawQuery(distinctDepartureTimeQuery, null);
-        List<String> distinctDepartureTimeArrayList = new ArrayList<String>();
+        List<String> distinctDepartureTimeArrayList = new ArrayList<>();
 
         if (cursor != null)
         {
@@ -238,7 +251,7 @@ public class TransDBHandler extends SQLiteOpenHelper
         String distinctArrivalTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " + KEY_IS_DEPARTURE + " = '" + 0 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
 
         Cursor cursor = db.rawQuery(distinctArrivalTimeQuery, null);
-        List<String> distinctArrivalTimeArrayList = new ArrayList<String>();
+        List<String> distinctArrivalTimeArrayList = new ArrayList<>();
 
         if (cursor != null)
         {
@@ -251,7 +264,7 @@ public class TransDBHandler extends SQLiteOpenHelper
 
     public List<Guest> getGuests(String dateTime, int isDeparture)
     {
-        List<Guest> guestListAtGivenTime = new ArrayList<Guest>();
+        List<Guest> guestListAtGivenTime = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_GUESTS + " WHERE " + KEY_ARR_DEP_TIME + " = '" + dateTime + "' AND " + KEY_IS_DEPARTURE + " = '" + isDeparture + "' ORDER BY " + KEY_IS_ARTIST + " ASC";
 
