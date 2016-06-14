@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/card_background"
+                android:descendantFocusability="afterDescendants"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp">
+
+    <TextView
+        android:id="@+id/listView_schedule_textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" android:layout_alignParentTop="true"
+        android:text="Name" android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <TextView
+        android:id="@+id/listView_schedule_textViewModeOfTravel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Mode Of Travel"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/listView_schedule_textViewOthersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView_schedule_textViewName"
+        android:text="Number"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <TextView
+        android:id="@+id/listView_schedule_textViewDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/listView_schedule_textViewModeOfTravel"
+        android:text="Details" android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <TextView
+        android:id="@+id/listView_schedule_textViewID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/listView_schedule_textViewOthersCount"
+        android:layout_toEndOf="@+id/listView_schedule_textViewName"
+        android:layout_toRightOf="@+id/listView_schedule_textViewName"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone"/>
+
+</RelativeLayout>

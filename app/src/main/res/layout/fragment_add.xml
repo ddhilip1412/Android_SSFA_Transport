@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scrollView_Add"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_addGuests"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_general"
+                style="@style/androidGuided_textView_headers"
+                android:text="General"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <EditText
+                android:id="@+id/editText_name"
+                style="@style/androidGuided_editText"
+                android:hint="Name"
+                android:singleLine="true"
+                />
+
+            <EditText
+                android:id="@+id/editText_othersCount"
+                style="@style/androidGuided_editText"
+                android:hint="Accompanying no of people"
+                android:inputType="number"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/editText_homeTown"
+                style="@style/androidGuided_editText"
+                android:hint="Home Town"
+                android:singleLine="true"/>
+
+
+            <TextView
+                android:id="@+id/textView_arrival"
+                style="@style/androidGuided_textView_headers"
+                android:text="Arrival"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <RadioGroup
+                android:id="@+id/dialog_radioGroup_arrival"
+                style="@style/androidGuided_editText"
+
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radioButton_arr_airport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_AIRPORT"/>
+                <RadioButton
+                    android:id="@+id/radioButton_arr_railwayStation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_RAILWAYSTATION"/>
+                <RadioButton
+                    android:id="@+id/radioButton_arr_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_OTHER"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/editText_arr_other"
+                style="@style/androidGuided_editText"
+                android:hint="Other Details"
+                android:inputType="text"
+                android:singleLine="true"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/editText_arrivalTime"
+                style="?android:attr/spinnerStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:clickable="true"
+                android:hint="Arrival Time"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:textSize="19sp"/>
+
+            <EditText
+                android:id="@+id/editText_arrivalDetails"
+                style="@style/androidGuided_editText"
+                android:hint="Arrival Details"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/editText_placeOfStay"
+                style="@style/androidGuided_editText"
+                android:hint="Place of Stay"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/textView_departure"
+                style="@style/androidGuided_textView_headers"
+                android:text="Departure"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup_departure"
+                style="@style/androidGuided_editText" android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radioButton_dep_airport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_AIRPORT"/>
+                <RadioButton
+                    android:id="@+id/radioButton_dep_railwayStation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_RAILWAYSTATION"/>
+                <RadioButton
+                    android:id="@+id/radioButton_dep_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" android:checked="false"
+                    android:text="@string/travelMode_OTHER"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/editText_dep_other"
+                style="@style/androidGuided_editText"
+                android:hint="Other Details"
+                android:inputType="text"
+                android:singleLine="true"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/editText_departureTime"
+                style="?android:attr/spinnerStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:clickable="true"
+                android:hint="Departure Time"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:textSize="19sp"/>
+
+            <EditText
+                android:id="@+id/editText_departureDetails"
+                style="@style/androidGuided_editText"
+                android:hint="Departure Details"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/textView_contact"
+                style="@style/androidGuided_textView_headers"
+                android:text="Contact"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <EditText
+                android:id="@+id/editText_contactNo"
+                style="@style/androidGuided_editText"
+                android:hint="Contact No"
+                android:inputType="phone"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/editText_facebookID"
+                style="@style/androidGuided_editText"
+                android:hint="Facebook ID"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/editText_emailID"
+                style="@style/androidGuided_editText"
+                android:hint="Email ID"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"/>
+            <CheckBox
+                android:id="@+id/checkBox_isArtist"
+                style="@style/androidGuided_editText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Check this if Artist"/>
+            <Button
+                android:id="@+id/button_Add"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/editText_emailID"
+                android:text="Add"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
