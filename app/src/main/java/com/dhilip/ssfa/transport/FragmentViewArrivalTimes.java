@@ -1,5 +1,6 @@
 package com.dhilip.ssfa.transport;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,6 +26,11 @@ public class FragmentViewArrivalTimes extends Fragment
     ListView listView_viewArrivalTimes;
     View rootView;
     SwipeRefreshLayout swipeRefreshLayout_viewArrivalTimings;
+
+    public static FragmentViewArrivalTimes newInstance()
+    {
+        return new FragmentViewArrivalTimes();
+    }
 
     private void InitializeControls()
     {
@@ -48,16 +55,16 @@ public class FragmentViewArrivalTimes extends Fragment
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id)
             {
                 TextView listItemClicked = (TextView) viewClicked;
-                String dateTime = listItemClicked.getText().toString();
-                // TO DO - Show New Activity
 
+                Date dateTime = HelperFunctions.GetDateFrom(listItemClicked.getText().toString(), Constants.DATEFORMAT);
+
+                Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+                intent.putExtra(Constants.SELECTED_DATETIME, dateTime);
+                intent.putExtra(Constants.ISDEPARTURE, false);
+
+                startActivity(intent);
             }
         });
-    }
-
-    public static FragmentViewArrivalTimes newInstance()
-    {
-        return new FragmentViewArrivalTimes();
     }
 
     @Nullable

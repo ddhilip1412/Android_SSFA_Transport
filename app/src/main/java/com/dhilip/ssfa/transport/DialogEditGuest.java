@@ -127,9 +127,9 @@ public class DialogEditGuest extends DialogFragment
                 dialog_radioButton_arr_airport.setChecked(true);
             else if (guests.get(0).getModeOfTravel().equals(getString(R.string.travelMode_RAILWAYSTATION)))
                 dialog_radioButton_arr_railwayStation.setChecked(true);
-            else if (guests.get(0).getModeOfTravel().equals(getString(R.string.travelMode_OTHER)))
+            else
             {
-                dialog_radioGroup_arrival.check(R.id.dialog_radioButton_arr_other);
+                dialog_radioButton_arr_other.setChecked(true);
                 dialog_editText_arr_other.setText(guests.get(0).getModeOfTravel());
                 dialog_editText_arr_other.setVisibility(View.VISIBLE);
             }
@@ -141,10 +141,11 @@ public class DialogEditGuest extends DialogFragment
                 dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_airport);
             else if (guests.get(1).getModeOfTravel().equals(getString(R.string.travelMode_RAILWAYSTATION)))
                 dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_railwayStation);
-            else if (guests.get(1).getModeOfTravel().equals(getString(R.string.travelMode_OTHER)))
+            else
             {
-                dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_other);
+                dialog_radioButton_dep_other.setChecked(true);
                 dialog_editText_dep_other.setText(guests.get(1).getModeOfTravel());
+                dialog_editText_dep_other.setVisibility(View.VISIBLE);
             }
         } else
         {
@@ -156,9 +157,9 @@ public class DialogEditGuest extends DialogFragment
 
             else if (guests.get(1).getModeOfTravel().equals(getString(R.string.travelMode_RAILWAYSTATION)))
                 dialog_radioButton_arr_railwayStation.setChecked(true);
-            else if (guests.get(1).getModeOfTravel().equals(getString(R.string.travelMode_OTHER)))
+            else
             {
-                dialog_radioGroup_arrival.check(R.id.dialog_radioButton_arr_other);
+                dialog_radioButton_arr_other.setChecked(true);
                 dialog_editText_arr_other.setText(guests.get(1).getModeOfTravel());
                 dialog_editText_arr_other.setVisibility(View.VISIBLE);
             }
@@ -167,13 +168,14 @@ public class DialogEditGuest extends DialogFragment
             dialog_editText_departureDetails.setText(guests.get(0).getDetailsOfTravel());
 
             if (guests.get(0).getModeOfTravel().equals(getString(R.string.travelMode_AIRPORT)))
-                dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_airport);
+                dialog_radioButton_dep_airport.setChecked(true);
             else if (guests.get(0).getModeOfTravel().equals(getString(R.string.travelMode_RAILWAYSTATION)))
-                dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_railwayStation);
-            else if (guests.get(0).getModeOfTravel().equals(getString(R.string.travelMode_OTHER)))
+                dialog_radioButton_dep_railwayStation.setChecked(true);
+            else
             {
-                dialog_radioGroup_departure.check(R.id.dialog_radioButton_dep_other);
+                dialog_radioButton_dep_other.setChecked(true);
                 dialog_editText_dep_other.setText(guests.get(0).getModeOfTravel());
+                dialog_editText_dep_other.setVisibility(View.VISIBLE);
             }
         }
         dialog_editText_placeOfStay.setText(guests.get(0).getPlaceOfStay());
@@ -193,7 +195,7 @@ public class DialogEditGuest extends DialogFragment
             {
                 if (ValidateForm())
                 {
-//                    WriteToDB(view.getContext());
+                    // TODO Update DB
                     ClearInputControls();
                 }
 
