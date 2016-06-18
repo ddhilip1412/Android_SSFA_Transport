@@ -5,10 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CABBBBBB"
+    android:orientation="vertical"
     tools:context="com.dhilip.ssfa.transport.ScheduleActivity">
-
+    <TextView
+        android:id="@+id/textView_airport"
+        style="@style/androidGuided_textView_headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/travelMode_AIRPORT"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
     <ListView
-        android:id="@+id/listView_schedule"
+        android:id="@+id/listView_schedule_airport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/textView_railwayStation"
+        style="@style/androidGuided_textView_headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/travelMode_RAILWAYSTATION"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+    <ListView
+        android:id="@+id/listView_schedule_railwayStation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/textView_other"
+        style="@style/androidGuided_textView_headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/travelMode_OTHER"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+    <ListView
+        android:id="@+id/listView_schedule_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:layout_weight="1"/>
 </LinearLayout>

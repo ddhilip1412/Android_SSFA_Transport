@@ -27,6 +27,11 @@ public class FragmentViewDepartureTimes extends Fragment
     View rootView;
     SwipeRefreshLayout swipeRefreshLayout_viewDepartureTimings;
 
+    public static FragmentViewDepartureTimes newInstance()
+    {
+        return new FragmentViewDepartureTimes();
+    }
+
     private void InitializeControls()
     {
         swipeRefreshLayout_viewDepartureTimings = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout_viewDepartureTimes);
@@ -41,7 +46,6 @@ public class FragmentViewDepartureTimes extends Fragment
                         RefreshDepartureTimesListView();
                     }
                 }
-
         );
 
         listView_viewDepartureTimes.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -58,14 +62,8 @@ public class FragmentViewDepartureTimes extends Fragment
                 intent.putExtra(Constants.ISDEPARTURE,true);
 
                 startActivity(intent);
-
             }
         });
-    }
-
-    public static FragmentViewDepartureTimes newInstance()
-    {
-        return new FragmentViewDepartureTimes();
     }
 
     @Nullable
