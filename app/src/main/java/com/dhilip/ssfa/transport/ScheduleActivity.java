@@ -77,6 +77,14 @@ public class ScheduleActivity extends AppCompatActivity
         PopulateIndividualGuestLists();
         SetListViewAdapters();
         SetViewVisibilities();
+        SetListViewHeights();
+    }
+
+    private void SetListViewHeights()
+    {
+        HelperFunctions.setDynamicHeight(listView_schedule_airport);
+        HelperFunctions.setDynamicHeight(listView_schedule_railwayStation);
+        HelperFunctions.setDynamicHeight(listView_schedule_other);
     }
 
     private void SetViewVisibilities()
