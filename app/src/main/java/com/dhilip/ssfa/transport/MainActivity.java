@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity
                     return FragmentViewArrivalTimes.newInstance();
                 case 2:
                     return FragmentViewDepartureTimes.newInstance();
+                case 3:
+                    return FragmentSearch.newInstance();
             }
             return null;
         }
@@ -121,8 +123,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public int getCount()
         {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
@@ -136,6 +138,8 @@ public class MainActivity extends AppCompatActivity
                     return "Arrivals";
                 case 2:
                     return "Departures";
+                case 3:
+                    return "Search";
             }
             return null;
         }
