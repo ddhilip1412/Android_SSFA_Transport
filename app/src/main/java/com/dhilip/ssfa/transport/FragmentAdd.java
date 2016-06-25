@@ -35,40 +35,35 @@ import java.util.Locale;
  */
 public class FragmentAdd extends Fragment
 {
-    public static FragmentAdd newInstance()
-    {
-        FragmentAdd fragment = new FragmentAdd();
-        return fragment;
-    }
-
-    public FragmentAdd()
-    {
-    }
-
+    private final static String EMPTY_STRING = "";
+    static EditText editText_arr_other;
+    static TextView textView_arrivalTime;
+    static EditText editText_dep_other;
+    static TextView textView_departureTime;
+    static TextView textView_selected;
+    static RadioButton radioButton_arr_other;
+    static RadioButton radioButton_dep_other;
+    static Date date;
     View rootView;
     EditText editText_name;
     EditText editText_othersCount;
     EditText editText_hometown;
-    static EditText editText_arr_other;
-    static TextView textView_arrivalTime;
     EditText editText_arrivalDetails;
     EditText editText_placeOfStay;
-    static EditText editText_dep_other;
-    static TextView textView_departureTime;
     EditText editText_departureDetails;
     EditText editText_contactNo;
     EditText editText_facebookID;
     EditText editText_emailID;
     Button btnAdd;
-    static TextView textView_selected;
-    static RadioButton radioButton_arr_other;
-    static RadioButton radioButton_dep_other;
     RadioGroup radioGroup_arrival;
     RadioGroup radioGroup_departure;
     CheckBox checkBox_isArtist;
-    static Date date;
 
-    private final static String EMPTY_STRING = "";
+    public static FragmentAdd newInstance()
+    {
+        FragmentAdd fragment = new FragmentAdd();
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -404,12 +399,10 @@ public class FragmentAdd extends Fragment
         TransDBHandler db = new TransDBHandler(context);
         String arrivalDetails;
         String departureDetails;
-        String toastMessageText = "Guest";
 
         // initialize local variables
         arrivalDetails = ((RadioButton) rootView.findViewById(radioGroup_arrival.getCheckedRadioButtonId())).getText().toString().trim();
         departureDetails = ((RadioButton) rootView.findViewById(radioGroup_departure.getCheckedRadioButtonId())).getText().toString().trim();
-        if (checkBox_isArtist.isChecked()) toastMessageText = "Artist";
 
         //local operations
         if (arrivalDetails == getString(R.string.travelMode_OTHER))
@@ -447,15 +440,18 @@ public class FragmentAdd extends Fragment
                 editText_emailID.getText().toString().trim(),
                 checkBox_isArtist.isChecked(),
                 true));
+    }
 
-//        {
-//            ShowToast(toastMessageText + " has been added");
-//        } else
-//        {
-//            ShowToast(toastMessageText + " has not been added");
-//        }
+    public void showTruitonTimePickerDialog(View v)
+    {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(this.getActivity().getSupportFragmentManager(), "timePicker");
+    }
 
-
+    public void showTruitonDatePickerDialog(View v)
+    {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(this.getActivity().getSupportFragmentManager(), "datePicker");
     }
 
     public static class TimePickerFragment extends DialogFragment implements
@@ -518,18 +514,6 @@ public class FragmentAdd extends Fragment
 
             date = calendar.getTime();
         }
-    }
-
-    public void showTruitonTimePickerDialog(View v)
-    {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(this.getActivity().getSupportFragmentManager(), "timePicker");
-    }
-
-    public void showTruitonDatePickerDialog(View v)
-    {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(this.getActivity().getSupportFragmentManager(), "datePicker");
     }
 
 }

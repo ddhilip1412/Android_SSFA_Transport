@@ -17,7 +17,7 @@ public class TransDBHandler extends SQLiteOpenHelper
 {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "guestsInfo";
@@ -213,6 +213,17 @@ public class TransDBHandler extends SQLiteOpenHelper
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, guest.getName());
+        values.put(KEY_OTHER_COUNT, guest.getOthersCount());
+        values.put(KEY_HOMETOWN, guest.getHometown());
+        values.put(KEY_STAY, guest.getPlaceOfStay());
+        values.put(KEY_ARR_DEP_MODE, guest.getModeOfTravel());
+        values.put(KEY_ARR_DEP_TIME, guest.getTimeOfTravel());
+        values.put(KEY_ARR_DEP_DETAILS, guest.getDetailsOfTravel());
+        values.put(KEY_CONTACT, guest.getContactNo());
+        values.put(KEY_FB_ID, guest.getFacebookID());
+        values.put(KEY_MAIL_ID, guest.getEmailID());
+        values.put(KEY_IS_ARTIST, guest.IsArtist());
+        values.put(KEY_IS_DEPARTURE, guest.isDeparture());
 
         // updating row
         return db.update(TABLE_GUESTS, values, KEY_ID + " = ?",

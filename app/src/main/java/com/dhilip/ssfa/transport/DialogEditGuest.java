@@ -2,13 +2,13 @@ package com.dhilip.ssfa.transport;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +18,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,9 @@ public class DialogEditGuest extends DialogFragment
     static RadioButton dialog_radioButton_arr_other;
     static RadioButton dialog_radioButton_dep_other;
     static Date date;
-    Dialog dialog = getDialog();
+    static List<Guest> guests;
+    static int arrivalID;
+    static int departureID;
     View rootView;
     EditText dialog_editText_name;
     EditText dialog_editText_othersCount;
@@ -55,6 +56,7 @@ public class DialogEditGuest extends DialogFragment
     EditText dialog_editText_facebookID;
     EditText dialog_editText_emailID;
     Button dialog_button_Update;
+    Button dialog_button_Done;
     RadioButton dialog_radioButton_arr_airport;
     RadioButton dialog_radioButton_dep_airport;
     RadioButton dialog_radioButton_arr_railwayStation;
@@ -62,11 +64,21 @@ public class DialogEditGuest extends DialogFragment
     RadioGroup dialog_radioGroup_arrival;
     RadioGroup dialog_radioGroup_departure;
     CheckBox dialog_checkBox_isArtist;
-    List<Guest> guests;
+
 
     public DialogEditGuest(List<Guest> guests)
     {
-        this.guests = guests;
+        DialogEditGuest.guests = guests;
+
+        if (guests.get(0).isDeparture())
+        {
+            departureID = guests.get(0).getId();
+            arrivalID = guests.get(1).getId();
+        } else
+        {
+            departureID = guests.get(1).getId();
+            arrivalID = guests.get(0).getId();
+        }
     }
 
     @Nullable
@@ -96,6 +108,7 @@ public class DialogEditGuest extends DialogFragment
         dialog_editText_contactNo = (EditText) rootView.findViewById(R.id.dialog_editText_contactNo);
         dialog_editText_facebookID = (EditText) rootView.findViewById(R.id.dialog_editText_facebookID);
         dialog_button_Update = (Button) rootView.findViewById(R.id.dialog_button_Update);
+        dialog_button_Done = (Button) rootView.findViewById(R.id.dialog_button_Done);
         dialog_radioButton_arr_airport = (RadioButton) rootView.findViewById(R.id.dialog_radioButton_arr_airport);
         dialog_radioButton_dep_airport = (RadioButton) rootView.findViewById(R.id.dialog_radioButton_dep_airport);
         dialog_radioButton_arr_railwayStation = (RadioButton) rootView.findViewById(R.id.dialog_radioButton_arr_railwayStation);
@@ -113,7 +126,6 @@ public class DialogEditGuest extends DialogFragment
 
     private void PopulateControls(List<Guest> guests)
     {
-//        dialog.setTitle(guests.get(0).getName()+" - Details");
         dialog_editText_name.setText(guests.get(0).getName());
         dialog_editText_othersCount.setText(guests.get(0).getOthersCount());
         dialog_editText_hometown.setText(guests.get(0).getHometown());
@@ -194,11 +206,16 @@ public class DialogEditGuest extends DialogFragment
             public void onClick(View view)
             {
                 if (ValidateForm())
-                {
-                    // TODO Update DB
-                    ClearInputControls();
-                }
+                    DoUpdateAfterConfirmation();
+            }
+        });
 
+        dialog_button_Done.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                DoDoneAfterConfirmation();
             }
         });
 
@@ -359,6 +376,99 @@ public class DialogEditGuest extends DialogFragment
         });
     }
 
+    private void DoUpdateAfterConfirmation()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you really want to update?");
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                UpdateGuests();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.show();
+    }
+
+    private void UpdateGuests()
+    {
+        TransDBHandler db = new TransDBHandler(getContext());
+        for (Guest guest : GetUpdatedGuestList())
+            db.updateGuest(guest);
+    }
+
+    private List<Guest> GetUpdatedGuestList()
+    {
+        String arrivalDetails;
+        String departureDetails;
+
+        // initialize local variables
+        arrivalDetails = ((RadioButton) rootView.findViewById(dialog_radioGroup_arrival.getCheckedRadioButtonId())).getText().toString().trim();
+        departureDetails = ((RadioButton) rootView.findViewById(dialog_radioGroup_departure.getCheckedRadioButtonId())).getText().toString().trim();
+
+        //local operations
+        if (arrivalDetails == getString(R.string.travelMode_OTHER))
+            arrivalDetails = dialog_editText_arr_other.getText().toString().trim();
+        if (departureDetails == getString(R.string.travelMode_OTHER))
+            departureDetails = dialog_editText_dep_other.getText().toString().trim();
+
+        List<Guest> updatedGuests = new ArrayList<Guest>();
+        Guest arrivalEntry = new Guest(
+                dialog_editText_name.getText().toString().trim(),
+                dialog_editText_othersCount.getText().toString().trim(),
+                dialog_editText_hometown.getText().toString().trim(),
+                dialog_editText_placeOfStay.getText().toString().trim(),
+                arrivalDetails,
+                dialog_textView_arrivalTime.getText().toString().trim(),
+                dialog_editText_arrivalDetails.getText().toString().trim(),
+                dialog_editText_contactNo.getText().toString().trim(),
+                dialog_editText_facebookID.getText().toString().trim(),
+                dialog_editText_emailID.getText().toString().trim(),
+                dialog_checkBox_isArtist.isChecked(),
+                false);
+        arrivalEntry.setId(arrivalID);
+        Guest departureEntry = new Guest(
+                dialog_editText_name.getText().toString().trim(),
+                dialog_editText_othersCount.getText().toString().trim(),
+                dialog_editText_hometown.getText().toString().trim(),
+                dialog_editText_placeOfStay.getText().toString().trim(),
+                departureDetails,
+                dialog_textView_departureTime.getText().toString().trim(),
+                dialog_editText_departureDetails.getText().toString().trim(),
+                dialog_editText_contactNo.getText().toString().trim(),
+                dialog_editText_facebookID.getText().toString().trim(),
+                dialog_editText_emailID.getText().toString().trim(),
+                dialog_checkBox_isArtist.isChecked(),
+                true);
+        departureEntry.setId(departureID);
+        updatedGuests.add(arrivalEntry);
+        updatedGuests.add(departureEntry);
+        return updatedGuests;
+    }
+
+    private void DoDoneAfterConfirmation()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you really want to mark this entry as completed?");
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                // TODO mark current entry as completed in DB
+                ClearInputControls();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.show();
+    }
+
     private void ClearInputControls()
     {
         dialog_editText_name.setText(EMPTY_STRING);
@@ -464,72 +574,6 @@ public class DialogEditGuest extends DialogFragment
         return result;
     }
 
-//    private void ShowToast(CharSequence message)
-//    {
-//        Toast toast = Toast.makeText(rootView.getContext(), message, Toast.LENGTH_SHORT);
-//        toast.show();
-//    }
-//
-//    private void WriteToDB(Context context)
-//    {
-//        // local variables
-//        TransDBHandler db = new TransDBHandler(context);
-//        String arrivalDetails;
-//        String departureDetails;
-//        String toastMessageText = "Guest";
-//
-//        // initialize local variables
-//        arrivalDetails = ((RadioButton) rootView.findViewById(dialog_radioGroup_arrival.getCheckedRadioButtonId())).getText().toString().trim();
-//        departureDetails = ((RadioButton) rootView.findViewById(dialog_radioGroup_departure.getCheckedRadioButtonId())).getText().toString().trim();
-//        if (dialog_checkBox_isArtist.isChecked()) toastMessageText = "Artist";
-//
-//        //local operations
-//        if (arrivalDetails.equals(getString(R.string.travelMode_OTHER)))
-//            arrivalDetails = dialog_editText_arr_other.getText().toString().trim();
-//        if (departureDetails.equals(getString(R.string.travelMode_OTHER)))
-//            departureDetails = dialog_editText_dep_other.getText().toString().trim();
-//        // Inserting Shop/Rows
-//        Log.d("Insert: ", "Inserting ..");
-//
-////        if (
-//        db.addGuest(new Guest(
-//                dialog_editText_name.getText().toString().trim(),
-//                dialog_editText_othersCount.getText().toString().trim(),
-//                dialog_editText_hometown.getText().toString().trim(),
-//                dialog_editText_placeOfStay.getText().toString().trim(),
-//                arrivalDetails,
-//                dialog_textView_arrivalTime.getText().toString().trim(),
-//                dialog_editText_arrivalDetails.getText().toString().trim(),
-//                dialog_editText_contactNo.getText().toString().trim(),
-//                dialog_editText_facebookID.getText().toString().trim(),
-//                dialog_editText_emailID.getText().toString().trim(),
-//                dialog_checkBox_isArtist.isChecked(),
-//                false));
-//
-//        db.addGuest(new Guest(
-//                dialog_editText_name.getText().toString().trim(),
-//                dialog_editText_othersCount.getText().toString().trim(),
-//                dialog_editText_hometown.getText().toString().trim(),
-//                dialog_editText_placeOfStay.getText().toString().trim(),
-//                departureDetails,
-//                dialog_textView_departureTime.getText().toString().trim(),
-//                dialog_editText_departureDetails.getText().toString().trim(),
-//                dialog_editText_contactNo.getText().toString().trim(),
-//                dialog_editText_facebookID.getText().toString().trim(),
-//                dialog_editText_emailID.getText().toString().trim(),
-//                dialog_checkBox_isArtist.isChecked(),
-//                true));
-//
-////        {
-////            ShowToast(toastMessageText + " has been added");
-////        } else
-////        {
-////            ShowToast(toastMessageText + " has not been added");
-////        }
-//
-//
-//    }
-
     public void showTruitonTimePickerDialog(View v)
     {
         android.support.v4.app.DialogFragment newFragment = new TimePickerFragment();
@@ -626,6 +670,4 @@ public class DialogEditGuest extends DialogFragment
             date = calendar.getTime();
         }
     }
-
 }
-
