@@ -19,6 +19,7 @@ public class Guest implements Serializable
     private String facebookID;
     private String emailID;
     private boolean isArtist;
+    private boolean isDone;
 
 
     private boolean isDeparture;
@@ -27,7 +28,7 @@ public class Guest implements Serializable
     {
     }
 
-    public Guest(String name, String othersCount, String hometown, String placeOfStay, String modeOfTravel, String timeOfTravel, String detailsOfTravel, String contactNo, String facebookID, String emailID, boolean isArtist, boolean isDeparture)
+    public Guest(String name, String othersCount, String hometown, String placeOfStay, String modeOfTravel, String timeOfTravel, String detailsOfTravel, String contactNo, String facebookID, String emailID, boolean isArtist, boolean isDeparture, boolean isDone)
     {
         this.name = name;
         this.othersCount = othersCount;
@@ -41,6 +42,7 @@ public class Guest implements Serializable
         this.emailID = emailID;
         this.isArtist = isArtist;
         this.isDeparture = isDeparture;
+        this.isDone = isDone;
     }
 
     public int getId()
@@ -172,5 +174,16 @@ public class Guest implements Serializable
     {
         this.isDeparture = isDeparture;
     }
+
+    public boolean isDone()
+    {
+        return isDone;
+    }
+
+    public void setIsDone(boolean isDone)
+    {
+        this.isDone = isDone;
+    }
+
 
 }

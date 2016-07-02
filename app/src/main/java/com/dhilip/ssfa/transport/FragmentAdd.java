@@ -61,8 +61,7 @@ public class FragmentAdd extends Fragment
 
     public static FragmentAdd newInstance()
     {
-        FragmentAdd fragment = new FragmentAdd();
-        return fragment;
+        return new FragmentAdd();
     }
 
     @Nullable
@@ -405,9 +404,9 @@ public class FragmentAdd extends Fragment
         departureDetails = ((RadioButton) rootView.findViewById(radioGroup_departure.getCheckedRadioButtonId())).getText().toString().trim();
 
         //local operations
-        if (arrivalDetails == getString(R.string.travelMode_OTHER))
+        if (arrivalDetails.equals(getString(R.string.travelMode_OTHER)))
             arrivalDetails = editText_arr_other.getText().toString().trim();
-        if (departureDetails == getString(R.string.travelMode_OTHER))
+        if (departureDetails.equals(getString(R.string.travelMode_OTHER)))
             departureDetails = editText_dep_other.getText().toString().trim();
         // Inserting Shop/Rows
         Log.d("Insert: ", "Inserting ..");
@@ -425,6 +424,7 @@ public class FragmentAdd extends Fragment
                 editText_facebookID.getText().toString().trim(),
                 editText_emailID.getText().toString().trim(),
                 checkBox_isArtist.isChecked(),
+                false,
                 false));
 
         db.addGuest(new Guest(
@@ -439,7 +439,8 @@ public class FragmentAdd extends Fragment
                 editText_facebookID.getText().toString().trim(),
                 editText_emailID.getText().toString().trim(),
                 checkBox_isArtist.isChecked(),
-                true));
+                true,
+                false));
     }
 
     public void showTruitonTimePickerDialog(View v)

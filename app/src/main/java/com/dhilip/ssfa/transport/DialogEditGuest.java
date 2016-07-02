@@ -3,6 +3,7 @@ package com.dhilip.ssfa.transport;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class DialogEditGuest extends DialogFragment
     static List<Guest> guests;
     static int arrivalID;
     static int departureID;
+    boolean isDeparture;
     View rootView;
     EditText dialog_editText_name;
     EditText dialog_editText_othersCount;
@@ -66,7 +68,7 @@ public class DialogEditGuest extends DialogFragment
     CheckBox dialog_checkBox_isArtist;
 
 
-    public DialogEditGuest(List<Guest> guests)
+    public DialogEditGuest(List<Guest> guests, boolean isDeparture)
     {
         DialogEditGuest.guests = guests;
 
@@ -79,6 +81,8 @@ public class DialogEditGuest extends DialogFragment
             departureID = guests.get(1).getId();
             arrivalID = guests.get(0).getId();
         }
+
+        this.isDeparture = isDeparture;
     }
 
     @Nullable
@@ -387,21 +391,22 @@ public class DialogEditGuest extends DialogFragment
             @Override
             public void onClick(DialogInterface dialog, int whichButton)
             {
-                UpdateGuests();
+                UpdateGuests(false);
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
         builder.show();
     }
 
-    private void UpdateGuests()
+    private void UpdateGuests(boolean isDone)
     {
         TransDBHandler db = new TransDBHandler(getContext());
-        for (Guest guest : GetUpdatedGuestList())
+        for (Guest guest : GenerateUpdatedGuestList(isDone))
             db.updateGuest(guest);
     }
 
-    private List<Guest> GetUpdatedGuestList()
+    private List<Guest> GenerateUpdatedGuestList(boolean isDone)
     {
         String arrivalDetails;
         String departureDetails;
@@ -411,12 +416,12 @@ public class DialogEditGuest extends DialogFragment
         departureDetails = ((RadioButton) rootView.findViewById(dialog_radioGroup_departure.getCheckedRadioButtonId())).getText().toString().trim();
 
         //local operations
-        if (arrivalDetails == getString(R.string.travelMode_OTHER))
+        if (arrivalDetails.equals(getString(R.string.travelMode_OTHER)))
             arrivalDetails = dialog_editText_arr_other.getText().toString().trim();
-        if (departureDetails == getString(R.string.travelMode_OTHER))
+        if (departureDetails.equals(getString(R.string.travelMode_OTHER)))
             departureDetails = dialog_editText_dep_other.getText().toString().trim();
 
-        List<Guest> updatedGuests = new ArrayList<Guest>();
+        List<Guest> updatedGuests = new ArrayList<>();
         Guest arrivalEntry = new Guest(
                 dialog_editText_name.getText().toString().trim(),
                 dialog_editText_othersCount.getText().toString().trim(),
@@ -429,6 +434,7 @@ public class DialogEditGuest extends DialogFragment
                 dialog_editText_facebookID.getText().toString().trim(),
                 dialog_editText_emailID.getText().toString().trim(),
                 dialog_checkBox_isArtist.isChecked(),
+                false,
                 false);
         arrivalEntry.setId(arrivalID);
         Guest departureEntry = new Guest(
@@ -443,8 +449,11 @@ public class DialogEditGuest extends DialogFragment
                 dialog_editText_facebookID.getText().toString().trim(),
                 dialog_editText_emailID.getText().toString().trim(),
                 dialog_checkBox_isArtist.isChecked(),
-                true);
+                true,
+                false);
         departureEntry.setId(departureID);
+        if (isDeparture) departureEntry.setIsDone(isDone);
+        else arrivalEntry.setIsDone(isDone);
         updatedGuests.add(arrivalEntry);
         updatedGuests.add(departureEntry);
         return updatedGuests;
@@ -461,35 +470,12 @@ public class DialogEditGuest extends DialogFragment
             @Override
             public void onClick(DialogInterface dialog, int whichButton)
             {
-                // TODO mark current entry as completed in DB
-                ClearInputControls();
+                UpdateGuests(true);
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
         builder.show();
-    }
-
-    private void ClearInputControls()
-    {
-        dialog_editText_name.setText(EMPTY_STRING);
-        dialog_editText_othersCount.setText(EMPTY_STRING);
-        dialog_editText_hometown.setText(EMPTY_STRING);
-        dialog_editText_arr_other.setText(EMPTY_STRING);
-        dialog_textView_arrivalTime.setText(EMPTY_STRING);
-        dialog_editText_arrivalDetails.setText(EMPTY_STRING);
-        dialog_editText_placeOfStay.setText(EMPTY_STRING);
-        dialog_editText_dep_other.setText(EMPTY_STRING);
-        dialog_textView_departureTime.setText(EMPTY_STRING);
-        dialog_editText_departureDetails.setText(EMPTY_STRING);
-        dialog_editText_contactNo.setText(EMPTY_STRING);
-        dialog_editText_facebookID.setText(EMPTY_STRING);
-        dialog_editText_emailID.setText(EMPTY_STRING);
-
-        dialog_checkBox_isArtist.setChecked(false);
-        dialog_radioButton_arr_other.setChecked(true);
-        dialog_radioButton_arr_other.setChecked(false);
-        dialog_radioButton_dep_other.setChecked(true);
-        dialog_radioButton_dep_other.setChecked(false);
     }
 
     private boolean ValidateForm()
@@ -589,7 +575,6 @@ public class DialogEditGuest extends DialogFragment
     public static class TimePickerFragment extends android.support.v4.app.DialogFragment implements
             TimePickerDialog.OnTimeSetListener
     {
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState)
         {

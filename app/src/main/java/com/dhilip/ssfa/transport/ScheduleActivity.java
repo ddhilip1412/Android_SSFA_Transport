@@ -30,9 +30,9 @@ public class ScheduleActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
-        InitializeControls();
         GetExtras(savedInstanceState);
         UseExtras();
+        InitializeControls();
 
         PopulateActivityViews();
     }
@@ -68,7 +68,7 @@ public class ScheduleActivity extends AppCompatActivity
         TransDBHandler db = new TransDBHandler(this);
         TextView listView_schedule_textViewID = (TextView) viewClicked.findViewById(R.id.listView_schedule_textViewID);
         int guestID = Integer.parseInt(listView_schedule_textViewID.getText().toString());
-        DialogEditGuest dialogEditGuest = new DialogEditGuest(db.getGuest(guestID));
+        DialogEditGuest dialogEditGuest = new DialogEditGuest(db.getGuest(guestID), isDeparture);
         dialogEditGuest.show(getSupportFragmentManager(), "Edit Current Guest");
     }
 
@@ -139,11 +139,10 @@ public class ScheduleActivity extends AppCompatActivity
         TransDBHandler db = new TransDBHandler(this);
         String selectedDateString = HelperFunctions.GetStringFrom(selectedDate, Constants.DATEFORMAT);
         int isDepartureInt = 0;
+        int isDone = 0;
         if (isDeparture) isDepartureInt = 1;
 
-        List<Guest> currentGuestList = db.getGuests(selectedDateString, isDepartureInt);
-
-        return currentGuestList;
+        return db.getGuests(selectedDateString, isDepartureInt, isDone);
     }
 
     private void UseExtras()

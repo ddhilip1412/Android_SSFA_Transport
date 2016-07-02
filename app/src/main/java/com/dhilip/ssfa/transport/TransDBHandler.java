@@ -17,7 +17,7 @@ public class TransDBHandler extends SQLiteOpenHelper
 {
 
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database Name
     private static final String DATABASE_NAME = "guestsInfo";
@@ -40,6 +40,7 @@ public class TransDBHandler extends SQLiteOpenHelper
     private static final String KEY_MAIL_ID = "emailID";
     private static final String KEY_IS_ARTIST = "isArtist";
     private static final String KEY_IS_DEPARTURE = "isDeparture";
+    private static final String KEY_IS_DONE = "isDone";
 
     public TransDBHandler(Context context)
     {
@@ -63,7 +64,8 @@ public class TransDBHandler extends SQLiteOpenHelper
                 KEY_FB_ID + " TEXT," +
                 KEY_MAIL_ID + " TEXT," +
                 KEY_IS_ARTIST + " TEXT," +
-                KEY_IS_DEPARTURE + " TEXT" + ")";
+                KEY_IS_DEPARTURE + " TEXT," +
+                KEY_IS_DONE + " TEXT" + ")";
         db.execSQL(CREATE_ARR_DEP_TABLE);
     }
 
@@ -82,7 +84,6 @@ public class TransDBHandler extends SQLiteOpenHelper
     {
         boolean result;
         SQLiteDatabase db = this.getWritableDatabase();
-        //onUpgrade(db, DATABASE_VERSION, DATABASE_VERSION + 1);
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, guest.getName()); // Guest Name
         values.put(KEY_OTHER_COUNT, guest.getOthersCount()); // Guest Phone Number
@@ -96,6 +97,7 @@ public class TransDBHandler extends SQLiteOpenHelper
         values.put(KEY_MAIL_ID, guest.getEmailID());
         values.put(KEY_IS_ARTIST, guest.IsArtist());
         values.put(KEY_IS_DEPARTURE, guest.isDeparture());
+        values.put(KEY_IS_DONE, guest.isDone());
         // Inserting Row
         result = (db.insert(TABLE_GUESTS, null, values) != -1);
 
@@ -145,13 +147,14 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);
+                guest.setIsDone(Integer.parseInt(cursor.getString(13)) == 1);
 
-                // Adding contact to list
+                // Adding guest to list
                 guestList.add(guest);
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return guest list
         return guestList;
     }
 
@@ -184,6 +187,7 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);
+                guest.setIsDone(Integer.parseInt(cursor.getString(13)) == 1);
 
                 // Adding contact to list
                 guestList.add(guest);
@@ -224,6 +228,7 @@ public class TransDBHandler extends SQLiteOpenHelper
         values.put(KEY_MAIL_ID, guest.getEmailID());
         values.put(KEY_IS_ARTIST, guest.IsArtist());
         values.put(KEY_IS_DEPARTURE, guest.isDeparture());
+        values.put(KEY_IS_DONE, guest.isDone());
 
         // updating row
         return db.update(TABLE_GUESTS, values, KEY_ID + " = ?",
@@ -242,7 +247,8 @@ public class TransDBHandler extends SQLiteOpenHelper
     public List<String> getDepartureDistinctTime()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String distinctDepartureTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " + KEY_IS_DEPARTURE + " = '" + 1 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
+        String distinctDepartureTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " +
+                KEY_IS_DEPARTURE + " = '" + 1 + "' AND " + KEY_IS_DONE + " = '" + 0 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
 
         Cursor cursor = db.rawQuery(distinctDepartureTimeQuery, null);
         List<String> distinctDepartureTimeArrayList = new ArrayList<>();
@@ -259,7 +265,8 @@ public class TransDBHandler extends SQLiteOpenHelper
     public List<String> getArrivalDistinctTime()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String distinctArrivalTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " + KEY_IS_DEPARTURE + " = '" + 0 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
+        String distinctArrivalTimeQuery = "SELECT DISTINCT datetime(" + KEY_ARR_DEP_TIME + ") FROM " + TABLE_GUESTS + " WHERE " +
+                KEY_IS_DEPARTURE + " = '" + 0 + "' AND " + KEY_IS_DONE + " = '" + 0 + "' ORDER BY datetime(" + KEY_ARR_DEP_TIME + ") ASC";
 
         Cursor cursor = db.rawQuery(distinctArrivalTimeQuery, null);
         List<String> distinctArrivalTimeArrayList = new ArrayList<>();
@@ -273,11 +280,12 @@ public class TransDBHandler extends SQLiteOpenHelper
         return distinctArrivalTimeArrayList;
     }
 
-    public List<Guest> getGuests(String dateTime, int isDeparture)
+    public List<Guest> getGuests(String dateTime, int isDeparture, int isDone)
     {
         List<Guest> guestListAtGivenTime = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_GUESTS + " WHERE " + KEY_ARR_DEP_TIME + " = '" + dateTime + "' AND " + KEY_IS_DEPARTURE + " = '" + isDeparture + "' ORDER BY " + KEY_IS_ARTIST + " ASC";
+        String selectQuery = "SELECT  * FROM " + TABLE_GUESTS + " WHERE " + KEY_ARR_DEP_TIME + " = '" + dateTime + "' AND " +
+                KEY_IS_DEPARTURE + " = '" + isDeparture + "' AND " + KEY_IS_DONE + " = '" + isDone + "' ORDER BY " + KEY_IS_ARTIST + " ASC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -301,6 +309,7 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);
+                guest.setIsDone(Integer.parseInt(cursor.getString(13)) == 1);
 
                 // Adding contact to list
                 guestListAtGivenTime.add(guest);
