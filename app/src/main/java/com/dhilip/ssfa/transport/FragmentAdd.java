@@ -47,12 +47,12 @@ public class FragmentAdd extends Fragment
     View rootView;
     EditText editText_name;
     EditText editText_othersCount;
+    EditText editText_otherDetails;
     EditText editText_hometown;
     EditText editText_arrivalDetails;
     EditText editText_placeOfStay;
     EditText editText_departureDetails;
     EditText editText_contactNo;
-    EditText editText_facebookID;
     EditText editText_emailID;
     Button btnAdd;
     RadioGroup radioGroup_arrival;
@@ -93,7 +93,7 @@ public class FragmentAdd extends Fragment
         textView_departureTime = (TextView) rootView.findViewById(R.id.editText_departureTime);
         editText_departureDetails = (EditText) rootView.findViewById(R.id.editText_departureDetails);
         editText_contactNo = (EditText) rootView.findViewById(R.id.editText_contactNo);
-        editText_facebookID = (EditText) rootView.findViewById(R.id.editText_facebookID);
+        editText_otherDetails = (EditText) rootView.findViewById(R.id.editText_otherDetails);
         btnAdd = (Button) rootView.findViewById(R.id.button_Add);
         radioButton_arr_other = (RadioButton) rootView.findViewById(R.id.radioButton_arr_other);
         radioButton_dep_other = (RadioButton) rootView.findViewById(R.id.radioButton_dep_other);
@@ -251,12 +251,12 @@ public class FragmentAdd extends Fragment
                 editText_contactNo.setError(null);
             }
         });
-        editText_facebookID.setOnClickListener(new View.OnClickListener()
+        editText_otherDetails.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                editText_facebookID.setError(null);
+                editText_otherDetails.setError(null);
             }
         });
 
@@ -291,7 +291,7 @@ public class FragmentAdd extends Fragment
         textView_departureTime.setText(EMPTY_STRING);
         editText_departureDetails.setText(EMPTY_STRING);
         editText_contactNo.setText(EMPTY_STRING);
-        editText_facebookID.setText(EMPTY_STRING);
+        editText_otherDetails.setText(EMPTY_STRING);
         editText_emailID.setText(EMPTY_STRING);
 
         checkBox_isArtist.setChecked(false);
@@ -347,9 +347,9 @@ public class FragmentAdd extends Fragment
             editText_departureDetails.setError("Departure Details is required");
             result = false;
         }
-        if (editText_facebookID.getText().toString().trim().equals(""))
+        if (editText_otherDetails.getText().toString().trim().equals(""))
         {
-            editText_facebookID.setError("Facebook ID is required");
+            editText_otherDetails.setError("Other Details required");
             result = false;
         }
         if (editText_emailID.getText().toString().trim().equals(""))
@@ -415,13 +415,13 @@ public class FragmentAdd extends Fragment
         db.addGuest(new Guest(
                 editText_name.getText().toString().trim(),
                 editText_othersCount.getText().toString().trim(),
+                editText_otherDetails.getText().toString().trim(),
                 editText_hometown.getText().toString().trim(),
                 editText_placeOfStay.getText().toString().trim(),
                 arrivalDetails,
                 textView_arrivalTime.getText().toString().trim(),
                 editText_arrivalDetails.getText().toString().trim(),
                 editText_contactNo.getText().toString().trim(),
-                editText_facebookID.getText().toString().trim(),
                 editText_emailID.getText().toString().trim(),
                 checkBox_isArtist.isChecked(),
                 false,
@@ -430,13 +430,13 @@ public class FragmentAdd extends Fragment
         db.addGuest(new Guest(
                 editText_name.getText().toString().trim(),
                 editText_othersCount.getText().toString().trim(),
+                editText_otherDetails.getText().toString().trim(),
                 editText_hometown.getText().toString().trim(),
                 editText_placeOfStay.getText().toString().trim(),
                 departureDetails,
                 textView_departureTime.getText().toString().trim(),
                 editText_departureDetails.getText().toString().trim(),
                 editText_contactNo.getText().toString().trim(),
-                editText_facebookID.getText().toString().trim(),
                 editText_emailID.getText().toString().trim(),
                 checkBox_isArtist.isChecked(),
                 true,

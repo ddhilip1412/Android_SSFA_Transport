@@ -41,6 +41,13 @@
                 android:singleLine="true"/>
 
             <EditText
+                android:id="@+id/editText_otherDetails"
+                style="@style/androidGuided_editText"
+                android:hint="Details of accompanying people"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+            <EditText
                 android:id="@+id/editText_homeTown"
                 style="@style/androidGuided_editText"
                 android:hint="Home Town"
@@ -180,13 +187,6 @@
                 style="@style/androidGuided_editText"
                 android:hint="Contact No"
                 android:inputType="phone"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/editText_facebookID"
-                style="@style/androidGuided_editText"
-                android:hint="Facebook ID"
-                android:inputType="textEmailAddress"
                 android:singleLine="true"/>
 
             <EditText

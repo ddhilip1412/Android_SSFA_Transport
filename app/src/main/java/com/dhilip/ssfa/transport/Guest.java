@@ -10,35 +10,33 @@ public class Guest implements Serializable
     private int id;
     private String name;
     private String othersCount;
+    private String otherDetails;
     private String hometown;
     private String placeOfStay;
     private String modeOfTravel;
     private String timeOfTravel;
     private String detailsOfTravel;
     private String contactNo;
-    private String facebookID;
     private String emailID;
     private boolean isArtist;
     private boolean isDone;
-
-
     private boolean isDeparture;
 
     public Guest()
     {
     }
 
-    public Guest(String name, String othersCount, String hometown, String placeOfStay, String modeOfTravel, String timeOfTravel, String detailsOfTravel, String contactNo, String facebookID, String emailID, boolean isArtist, boolean isDeparture, boolean isDone)
+    public Guest(String name, String othersCount, String otherDetails, String hometown, String placeOfStay, String modeOfTravel, String timeOfTravel, String detailsOfTravel, String contactNo, String emailID, boolean isArtist, boolean isDeparture, boolean isDone)
     {
         this.name = name;
         this.othersCount = othersCount;
+        this.otherDetails = otherDetails;
         this.hometown = hometown;
         this.placeOfStay = placeOfStay;
         this.modeOfTravel = modeOfTravel;
         this.timeOfTravel = timeOfTravel;
         this.detailsOfTravel = detailsOfTravel;
         this.contactNo = contactNo;
-        this.facebookID = facebookID;
         this.emailID = emailID;
         this.isArtist = isArtist;
         this.isDeparture = isDeparture;
@@ -135,14 +133,14 @@ public class Guest implements Serializable
         this.contactNo = contactNo;
     }
 
-    public String getFacebookID()
+    public String getOtherDetails()
     {
-        return facebookID;
+        return otherDetails;
     }
 
-    public void setFacebookID(String facebookID)
+    public void setOtherDetails(String otherDetails)
     {
-        this.facebookID = facebookID;
+        this.otherDetails = otherDetails;
     }
 
     public String getEmailID()
@@ -184,6 +182,5 @@ public class Guest implements Serializable
     {
         this.isDone = isDone;
     }
-
 
 }

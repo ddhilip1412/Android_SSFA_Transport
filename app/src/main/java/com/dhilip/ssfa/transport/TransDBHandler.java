@@ -5,19 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class TransDBHandler extends SQLiteOpenHelper
 {
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Database Name
     private static final String DATABASE_NAME = "guestsInfo";
@@ -30,13 +26,13 @@ public class TransDBHandler extends SQLiteOpenHelper
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_OTHER_COUNT = "othersCount";
+    private static final String KEY_OTHER_DETAILS = "otherDetails";
     private static final String KEY_HOMETOWN = "hometown";
     private static final String KEY_ARR_DEP_MODE = "arrivalModeOfTravel";
     private static final String KEY_ARR_DEP_TIME = "arrivalTime";
     private static final String KEY_ARR_DEP_DETAILS = "arrivalDetails";
     private static final String KEY_STAY = "placeOfStay";
     private static final String KEY_CONTACT = "contactNo";
-    private static final String KEY_FB_ID = "facebookID";
     private static final String KEY_MAIL_ID = "emailID";
     private static final String KEY_IS_ARTIST = "isArtist";
     private static final String KEY_IS_DEPARTURE = "isDeparture";
@@ -55,13 +51,13 @@ public class TransDBHandler extends SQLiteOpenHelper
                 KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_NAME + " TEXT," +
                 KEY_OTHER_COUNT + " INTEGER," +
+                KEY_OTHER_DETAILS + " TEXT," +
                 KEY_HOMETOWN + " TEXT," +
                 KEY_STAY + " TEXT," +
                 KEY_ARR_DEP_MODE + " TEXT," +
                 KEY_ARR_DEP_TIME + " TEXT," +
                 KEY_ARR_DEP_DETAILS + " TEXT," +
                 KEY_CONTACT + " TEXT," +
-                KEY_FB_ID + " TEXT," +
                 KEY_MAIL_ID + " TEXT," +
                 KEY_IS_ARTIST + " TEXT," +
                 KEY_IS_DEPARTURE + " TEXT," +
@@ -87,13 +83,13 @@ public class TransDBHandler extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, guest.getName()); // Guest Name
         values.put(KEY_OTHER_COUNT, guest.getOthersCount()); // Guest Phone Number
+        values.put(KEY_OTHER_DETAILS, guest.getOtherDetails());
         values.put(KEY_HOMETOWN, guest.getHometown());
         values.put(KEY_STAY, guest.getPlaceOfStay());
         values.put(KEY_ARR_DEP_MODE, guest.getModeOfTravel());
         values.put(KEY_ARR_DEP_TIME, guest.getTimeOfTravel());
         values.put(KEY_ARR_DEP_DETAILS, guest.getDetailsOfTravel());
         values.put(KEY_CONTACT, guest.getContactNo());
-        values.put(KEY_FB_ID, guest.getFacebookID());
         values.put(KEY_MAIL_ID, guest.getEmailID());
         values.put(KEY_IS_ARTIST, guest.IsArtist());
         values.put(KEY_IS_DEPARTURE, guest.isDeparture());
@@ -137,13 +133,13 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setId(Integer.parseInt(cursor.getString(0)));
                 guest.setName(cursor.getString(1));
                 guest.setOthersCount(cursor.getString(2));
-                guest.setHometown(cursor.getString(3));
-                guest.setPlaceOfStay(cursor.getString(4));
-                guest.setModeOfTravel(cursor.getString(5));
-                guest.setTimeOfTravel(cursor.getString(6));
-                guest.setDetailsOfTravel(cursor.getString(7));
-                guest.setContactNo(cursor.getString(8));
-                guest.setFacebookID(cursor.getString(9));
+                guest.setOtherDetails(cursor.getString(3));
+                guest.setHometown(cursor.getString(4));
+                guest.setPlaceOfStay(cursor.getString(5));
+                guest.setModeOfTravel(cursor.getString(6));
+                guest.setTimeOfTravel(cursor.getString(7));
+                guest.setDetailsOfTravel(cursor.getString(8));
+                guest.setContactNo(cursor.getString(9));
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);
@@ -177,13 +173,13 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setId(Integer.parseInt(cursor.getString(0)));
                 guest.setName(cursor.getString(1));
                 guest.setOthersCount(cursor.getString(2));
-                guest.setHometown(cursor.getString(3));
-                guest.setPlaceOfStay(cursor.getString(4));
-                guest.setModeOfTravel(cursor.getString(5));
-                guest.setTimeOfTravel(cursor.getString(6));
-                guest.setDetailsOfTravel(cursor.getString(7));
-                guest.setContactNo(cursor.getString(8));
-                guest.setFacebookID(cursor.getString(9));
+                guest.setOtherDetails(cursor.getString(3));
+                guest.setHometown(cursor.getString(4));
+                guest.setPlaceOfStay(cursor.getString(5));
+                guest.setModeOfTravel(cursor.getString(6));
+                guest.setTimeOfTravel(cursor.getString(7));
+                guest.setDetailsOfTravel(cursor.getString(8));
+                guest.setContactNo(cursor.getString(9));
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);
@@ -218,13 +214,13 @@ public class TransDBHandler extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, guest.getName());
         values.put(KEY_OTHER_COUNT, guest.getOthersCount());
+        values.put(KEY_OTHER_DETAILS, guest.getOtherDetails());
         values.put(KEY_HOMETOWN, guest.getHometown());
         values.put(KEY_STAY, guest.getPlaceOfStay());
         values.put(KEY_ARR_DEP_MODE, guest.getModeOfTravel());
         values.put(KEY_ARR_DEP_TIME, guest.getTimeOfTravel());
         values.put(KEY_ARR_DEP_DETAILS, guest.getDetailsOfTravel());
         values.put(KEY_CONTACT, guest.getContactNo());
-        values.put(KEY_FB_ID, guest.getFacebookID());
         values.put(KEY_MAIL_ID, guest.getEmailID());
         values.put(KEY_IS_ARTIST, guest.IsArtist());
         values.put(KEY_IS_DEPARTURE, guest.isDeparture());
@@ -299,13 +295,13 @@ public class TransDBHandler extends SQLiteOpenHelper
                 guest.setId(Integer.parseInt(cursor.getString(0)));
                 guest.setName(cursor.getString(1));
                 guest.setOthersCount(cursor.getString(2));
-                guest.setHometown(cursor.getString(3));
-                guest.setPlaceOfStay(cursor.getString(4));
-                guest.setModeOfTravel(cursor.getString(5));
-                guest.setTimeOfTravel(cursor.getString(6));
-                guest.setDetailsOfTravel(cursor.getString(7));
-                guest.setContactNo(cursor.getString(8));
-                guest.setFacebookID(cursor.getString(9));
+                guest.setOtherDetails(cursor.getString(3));
+                guest.setHometown(cursor.getString(4));
+                guest.setPlaceOfStay(cursor.getString(5));
+                guest.setModeOfTravel(cursor.getString(6));
+                guest.setTimeOfTravel(cursor.getString(7));
+                guest.setDetailsOfTravel(cursor.getString(8));
+                guest.setContactNo(cursor.getString(9));
                 guest.setEmailID(cursor.getString(10));
                 guest.setIsArtist(Integer.parseInt(cursor.getString(11)) == 1);
                 guest.setIsDeparture(Integer.parseInt(cursor.getString(12)) == 1);

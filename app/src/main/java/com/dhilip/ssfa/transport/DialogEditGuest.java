@@ -3,7 +3,6 @@ package com.dhilip.ssfa.transport;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -34,7 +33,6 @@ import java.util.Locale;
  */
 public class DialogEditGuest extends DialogFragment
 {
-    static final String EMPTY_STRING = "";
     static EditText dialog_editText_arr_other;
     static TextView dialog_textView_arrivalTime;
     static EditText dialog_editText_dep_other;
@@ -50,12 +48,12 @@ public class DialogEditGuest extends DialogFragment
     View rootView;
     EditText dialog_editText_name;
     EditText dialog_editText_othersCount;
+    EditText dialog_editText_otherDetails;
     EditText dialog_editText_hometown;
     EditText dialog_editText_arrivalDetails;
     EditText dialog_editText_placeOfStay;
     EditText dialog_editText_departureDetails;
     EditText dialog_editText_contactNo;
-    EditText dialog_editText_facebookID;
     EditText dialog_editText_emailID;
     Button dialog_button_Update;
     Button dialog_button_Done;
@@ -101,6 +99,7 @@ public class DialogEditGuest extends DialogFragment
         dialog_editText_emailID = (EditText) rootView.findViewById(R.id.dialog_editText_emailID);
         dialog_editText_name = (EditText) rootView.findViewById(R.id.dialog_editText_name);
         dialog_editText_othersCount = (EditText) rootView.findViewById(R.id.dialog_editText_othersCount);
+        dialog_editText_otherDetails = (EditText) rootView.findViewById(R.id.dialog_editText_otherDetails);
         dialog_editText_hometown = (EditText) rootView.findViewById(R.id.dialog_editText_homeTown);
         dialog_editText_arr_other = (EditText) rootView.findViewById(R.id.dialog_editText_arr_other);
         dialog_textView_arrivalTime = (TextView) rootView.findViewById(R.id.dialog_editText_arrivalTime);
@@ -110,7 +109,6 @@ public class DialogEditGuest extends DialogFragment
         dialog_textView_departureTime = (TextView) rootView.findViewById(R.id.dialog_editText_departureTime);
         dialog_editText_departureDetails = (EditText) rootView.findViewById(R.id.dialog_editText_departureDetails);
         dialog_editText_contactNo = (EditText) rootView.findViewById(R.id.dialog_editText_contactNo);
-        dialog_editText_facebookID = (EditText) rootView.findViewById(R.id.dialog_editText_facebookID);
         dialog_button_Update = (Button) rootView.findViewById(R.id.dialog_button_Update);
         dialog_button_Done = (Button) rootView.findViewById(R.id.dialog_button_Done);
         dialog_radioButton_arr_airport = (RadioButton) rootView.findViewById(R.id.dialog_radioButton_arr_airport);
@@ -132,6 +130,7 @@ public class DialogEditGuest extends DialogFragment
     {
         dialog_editText_name.setText(guests.get(0).getName());
         dialog_editText_othersCount.setText(guests.get(0).getOthersCount());
+        dialog_editText_otherDetails.setText(guests.get(0).getOtherDetails());
         dialog_editText_hometown.setText(guests.get(0).getHometown());
 
         if (!guests.get(0).isDeparture())
@@ -196,7 +195,6 @@ public class DialogEditGuest extends DialogFragment
         }
         dialog_editText_placeOfStay.setText(guests.get(0).getPlaceOfStay());
         dialog_editText_contactNo.setText(guests.get(0).getContactNo());
-        dialog_editText_facebookID.setText(guests.get(0).getFacebookID());
         dialog_editText_emailID.setText(guests.get(0).getEmailID());
         dialog_checkBox_isArtist.setChecked(guests.get(0).IsArtist());
     }
@@ -353,12 +351,12 @@ public class DialogEditGuest extends DialogFragment
                 dialog_editText_contactNo.setError(null);
             }
         });
-        dialog_editText_facebookID.setOnClickListener(new View.OnClickListener()
+        dialog_editText_otherDetails.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                dialog_editText_facebookID.setError(null);
+                dialog_editText_otherDetails.setError(null);
             }
         });
 
@@ -392,7 +390,7 @@ public class DialogEditGuest extends DialogFragment
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 UpdateGuests(false);
-                dialog.dismiss();
+                dismiss();
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
@@ -425,13 +423,13 @@ public class DialogEditGuest extends DialogFragment
         Guest arrivalEntry = new Guest(
                 dialog_editText_name.getText().toString().trim(),
                 dialog_editText_othersCount.getText().toString().trim(),
+                dialog_editText_otherDetails.getText().toString().trim(),
                 dialog_editText_hometown.getText().toString().trim(),
                 dialog_editText_placeOfStay.getText().toString().trim(),
                 arrivalDetails,
                 dialog_textView_arrivalTime.getText().toString().trim(),
                 dialog_editText_arrivalDetails.getText().toString().trim(),
                 dialog_editText_contactNo.getText().toString().trim(),
-                dialog_editText_facebookID.getText().toString().trim(),
                 dialog_editText_emailID.getText().toString().trim(),
                 dialog_checkBox_isArtist.isChecked(),
                 false,
@@ -440,13 +438,13 @@ public class DialogEditGuest extends DialogFragment
         Guest departureEntry = new Guest(
                 dialog_editText_name.getText().toString().trim(),
                 dialog_editText_othersCount.getText().toString().trim(),
+                dialog_editText_otherDetails.getText().toString().trim(),
                 dialog_editText_hometown.getText().toString().trim(),
                 dialog_editText_placeOfStay.getText().toString().trim(),
                 departureDetails,
                 dialog_textView_departureTime.getText().toString().trim(),
                 dialog_editText_departureDetails.getText().toString().trim(),
                 dialog_editText_contactNo.getText().toString().trim(),
-                dialog_editText_facebookID.getText().toString().trim(),
                 dialog_editText_emailID.getText().toString().trim(),
                 dialog_checkBox_isArtist.isChecked(),
                 true,
@@ -471,7 +469,7 @@ public class DialogEditGuest extends DialogFragment
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 UpdateGuests(true);
-                dialog.dismiss();
+                dismiss();
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
@@ -521,9 +519,9 @@ public class DialogEditGuest extends DialogFragment
             dialog_editText_departureDetails.setError("Departure Details is required");
             result = false;
         }
-        if (dialog_editText_facebookID.getText().toString().trim().equals(""))
+        if (dialog_editText_otherDetails.getText().toString().trim().equals(""))
         {
-            dialog_editText_facebookID.setError("Facebook ID is required");
+            dialog_editText_otherDetails.setError("Facebook ID is required");
             result = false;
         }
         if (dialog_editText_emailID.getText().toString().trim().equals(""))
@@ -655,4 +653,5 @@ public class DialogEditGuest extends DialogFragment
             date = calendar.getTime();
         }
     }
+
 }
