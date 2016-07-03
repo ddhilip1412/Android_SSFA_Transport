@@ -183,4 +183,31 @@ public class Guest implements Serializable
         this.isDone = isDone;
     }
 
+    public boolean contains(CharSequence searchCharSequence)
+    {
+        boolean result = false;
+
+        if (name.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (othersCount.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (otherDetails.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (hometown.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (placeOfStay.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (modeOfTravel.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (timeOfTravel.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (detailsOfTravel.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (contactNo.toLowerCase().contains(searchCharSequence))
+            result = true;
+        else if (emailID.toLowerCase().contains(searchCharSequence))
+            result = true;
+
+        return result;
+    }
 }

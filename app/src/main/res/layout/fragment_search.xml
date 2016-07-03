@@ -3,9 +3,18 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent">
 
-    <SearchView
+
+    <EditText
+        android:id="@+id/editText_search"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:drawableRight="@android:drawable/ic_menu_search"
+        android:hint="Enter text to search entries"/>
+    <ListView
+        android:id="@+id/listView_searchResults"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchView" android:layout_alignParentTop="true"
+        android:layout_below="@+id/editText_search"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

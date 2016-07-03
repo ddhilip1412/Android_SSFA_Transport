@@ -3,9 +3,15 @@ package com.dhilip.ssfa.transport;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.List;
 
 /**
  * Created by Dhilip on 6/24/2016.
@@ -14,16 +20,67 @@ import android.view.ViewGroup;
 
 public class FragmentSearch extends Fragment
 {
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        return rootView;
-    }
+    View rootView;
+    private ListView listView_searchResults;
+    private EditText editText_search;
+    private CustomAdapterSchedule customGuestAdapter;
 
     public static FragmentSearch newInstance()
     {
         return new FragmentSearch();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        InitializeControls();
+        SetupListView();
+        return rootView;
+    }
+
+    private void InitializeControls()
+    {
+        editText_search = (EditText) rootView.findViewById(R.id.editText_search);
+        listView_searchResults = (ListView) rootView.findViewById(R.id.listView_searchResults);
+
+        listView_searchResults.setTextFilterEnabled(true);
+
+        editText_search.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (before > count)
+                    customGuestAdapter.resetList();
+                customGuestAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+
+            }
+        });
+    }
+
+    private void SetupListView()
+    {
+        List<Guest> completeGuestList = PopulateCompleteGuestList();
+        customGuestAdapter = new CustomAdapterSchedule(this.getContext(), completeGuestList);
+        listView_searchResults.setAdapter(customGuestAdapter);
+    }
+
+    private List<Guest> PopulateCompleteGuestList()
+    {
+        TransDBHandler db = new TransDBHandler(this.getContext());
+        return db.getAllGuests();
     }
 }
