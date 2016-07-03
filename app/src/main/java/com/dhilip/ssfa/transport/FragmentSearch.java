@@ -8,8 +8,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -71,11 +73,31 @@ public class FragmentSearch extends Fragment
         });
     }
 
+    private void ShowDetailsOfSelectedGuest(View viewClicked)
+    {
+        TransDBHandler db = new TransDBHandler(this.getContext());
+        TextView listView_schedule_textViewID = (TextView) viewClicked.findViewById(R.id.listView_schedule_textViewID);
+        TextView listView_schedule_textViewName = (TextView) viewClicked.findViewById(R.id.listView_schedule_textViewName);
+        int guestID = Integer.parseInt(listView_schedule_textViewID.getText().toString());
+        boolean isDeparture = (listView_schedule_textViewName.getCurrentTextColor() == this.getActivity().getResources().getColor(R.color.colorDeparture));
+        DialogEditGuest dialogEditGuest = new DialogEditGuest(db.getGuest(guestID), isDeparture);
+        dialogEditGuest.show(this.getActivity().getSupportFragmentManager(), "Edit Current Guest");
+    }
+
     private void SetupListView()
     {
         List<Guest> completeGuestList = PopulateCompleteGuestList();
         customGuestAdapter = new CustomAdapterSchedule(this.getContext(), completeGuestList);
         listView_searchResults.setAdapter(customGuestAdapter);
+
+        listView_searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id)
+            {
+                ShowDetailsOfSelectedGuest(viewClicked);
+            }
+        });
     }
 
     private List<Guest> PopulateCompleteGuestList()
