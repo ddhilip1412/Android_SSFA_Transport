@@ -1,14 +1,13 @@
 package com.dhilip.ssfa.transport;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -49,18 +48,33 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        SetupTabIcons(tabLayout);
+    }
 
-
+    private void SetupTabIcons(TabLayout tabLayout)
+    {
+        try
+        {
+            for (int i = 0; i < tabLayout.getTabCount(); i++)
+                switch (i)
+                {
+                    case 0:
+                        tabLayout.getTabAt(i).setIcon(R.mipmap.ic_add_white_24dp);
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(i).setIcon(R.mipmap.ic_flight_land_white_24dp);
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(i).setIcon(R.mipmap.ic_flight_takeoff_white_24dp);
+                        break;
+                    case 3:
+                        tabLayout.getTabAt(i).setIcon(R.mipmap.ic_search_white_24dp);
+                        break;
+                }
+        } catch (NullPointerException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -130,17 +144,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public CharSequence getPageTitle(int position)
         {
-            switch (position)
-            {
-                case 0:
-                    return "Add Guests";
-                case 1:
-                    return "Arrivals";
-                case 2:
-                    return "Departures";
-                case 3:
-                    return "Search";
-            }
             return null;
         }
     }
