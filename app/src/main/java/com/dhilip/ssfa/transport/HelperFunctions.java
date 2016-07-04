@@ -1,10 +1,10 @@
 package com.dhilip.ssfa.transport;
 
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +24,6 @@ public class HelperFunctions
             convertedDate = currentDateFormat.parse(dateString);
         } catch (ParseException e)
         {
-//             TODO Auto-generated catch block
             e.printStackTrace();
         }
         return convertedDate;
@@ -33,8 +32,13 @@ public class HelperFunctions
     public static String GetStringFrom(Date date, String dateFormat)
     {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-        String convertedString = formatter.format(date);
-        return convertedString;
+        return formatter.format(date);
+    }
+
+    public static String ConvertDateString(String dateString, String fromFormat, String toFormat)
+    {
+        Date dateObj = GetDateFrom(dateString, fromFormat);
+        return GetStringFrom(dateObj, toFormat);
     }
 
     public static void setDynamicHeight(ListView mListView)

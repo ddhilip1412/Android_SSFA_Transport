@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,8 +56,8 @@ public class FragmentViewDepartureTimes extends Fragment
             {
                 TextView listItemClicked = (TextView) viewClicked;
 
-                Date dateTime = HelperFunctions.GetDateFrom(listItemClicked.getText().toString(),Constants.DATEFORMAT);
-
+//                Date dateTime = HelperFunctions.GetDateFrom(listItemClicked.getText().toString(),Constants.DATEFORMAT);
+                String dateTime = listItemClicked.getText().toString();
                 Intent intent = new Intent(getActivity(), ScheduleActivity.class);
                 intent.putExtra(Constants.SELECTED_DATETIME,dateTime);
                 intent.putExtra(Constants.ISDEPARTURE,true);
@@ -84,8 +85,16 @@ public class FragmentViewDepartureTimes extends Fragment
         TransDBHandler db = new TransDBHandler(this.getContext());
         List<String> distinctTime = db.getDepartureDistinctTime();
 
+        List<String> formattedDistinctTime = new ArrayList<>();
+        Date dateTime;
+        for (int i = 0; i < distinctTime.size(); i++)
+        {
+            dateTime = HelperFunctions.GetDateFrom(distinctTime.get(i), Constants.DATEFORMAT);
+            formattedDistinctTime.add(HelperFunctions.GetStringFrom(dateTime, Constants.SECONDARY_DATEFORMAT));
+        }
+
         // Setup Adapter
-        ArrayAdapter adapter = new ArrayAdapter(this.getContext(), R.layout.listviewitem_time, distinctTime);
+        ArrayAdapter adapter = new ArrayAdapter(this.getContext(), R.layout.listviewitem_time, formattedDistinctTime);
 
         // Setup ListView
         listView_viewDepartureTimes.setAdapter(adapter);

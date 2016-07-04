@@ -1,9 +1,9 @@
 package com.dhilip.ssfa.transport;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class FragmentViewArrivalTimes extends Fragment
             {
                 TextView listItemClicked = (TextView) viewClicked;
 
-                Date dateTime = HelperFunctions.GetDateFrom(listItemClicked.getText().toString(), Constants.DATEFORMAT);
+                String dateTime = listItemClicked.getText().toString();
 
                 Intent intent = new Intent(getActivity(), ScheduleActivity.class);
                 intent.putExtra(Constants.SELECTED_DATETIME, dateTime);
@@ -84,9 +85,15 @@ public class FragmentViewArrivalTimes extends Fragment
         //Create Items
         TransDBHandler db = new TransDBHandler(this.getContext());
         List<String> distinctTime = db.getArrivalDistinctTime();
-
+        List<String> formattedDistinctTime = new ArrayList<>();
+        Date dateTime;
+        for (int i = 0; i < distinctTime.size(); i++)
+        {
+            dateTime = HelperFunctions.GetDateFrom(distinctTime.get(i), Constants.DATEFORMAT);
+            formattedDistinctTime.add(HelperFunctions.GetStringFrom(dateTime, Constants.SECONDARY_DATEFORMAT));
+        }
         // Setup Adapter
-        ArrayAdapter adapter = new ArrayAdapter(this.getContext(), R.layout.listviewitem_time, distinctTime);
+        ArrayAdapter adapter = new ArrayAdapter(this.getContext(), R.layout.listviewitem_time, formattedDistinctTime);
 
         // Setup ListView
         listView_viewArrivalTimes.setAdapter(adapter);

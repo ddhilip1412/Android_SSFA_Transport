@@ -1,20 +1,19 @@
 package com.dhilip.ssfa.transport;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity
 {
 
-    Date selectedDate;
+    String selectedDateString;
     boolean isDeparture;
     String arrivalOrDeparture = "Arrival";
     List<Guest> airportGuestList;
@@ -137,12 +136,11 @@ public class ScheduleActivity extends AppCompatActivity
     private List<Guest> PopulateCurrentGuestList()
     {
         TransDBHandler db = new TransDBHandler(this);
-        String selectedDateString = HelperFunctions.GetStringFrom(selectedDate, Constants.DATEFORMAT);
         int isDepartureInt = 0;
         int isDone = 0;
         if (isDeparture) isDepartureInt = 1;
-
-        return db.getGuests(selectedDateString, isDepartureInt, isDone);
+        String convertedDateString = HelperFunctions.ConvertDateString(selectedDateString, Constants.SECONDARY_DATEFORMAT, Constants.DATEFORMAT);
+        return db.getGuests(convertedDateString, isDepartureInt, isDone);
     }
 
     private void UseExtras()
@@ -150,7 +148,7 @@ public class ScheduleActivity extends AppCompatActivity
         if (isDeparture)
             arrivalOrDeparture = "Departure";
 
-        String title = arrivalOrDeparture + "s on " + HelperFunctions.GetStringFrom(selectedDate, Constants.SECONDARY_DATEFORMAT);
+        String title = arrivalOrDeparture + "s on " + selectedDateString;
         setTitle(title);
     }
 
@@ -162,15 +160,15 @@ public class ScheduleActivity extends AppCompatActivity
             Bundle extras = getIntent().getExtras();
             if (extras == null)
             {
-                selectedDate = null;
+                selectedDateString = null;
             } else
             {
-                selectedDate = (Date) extras.getSerializable(Constants.SELECTED_DATETIME);
+                selectedDateString = extras.getString(Constants.SELECTED_DATETIME);
                 isDeparture = extras.getBoolean(Constants.ISDEPARTURE);
             }
         } else
         {
-            selectedDate = (Date) savedInstanceState.getSerializable(Constants.SELECTED_DATETIME);
+            selectedDateString = savedInstanceState.getString(Constants.SELECTED_DATETIME);
             isDeparture = savedInstanceState.getBoolean(Constants.ISDEPARTURE);
         }
     }
